@@ -26,10 +26,24 @@ public class MainActivity extends AppCompatActivity {
 
       //使用Spinner
       Spinner notify = findViewById(R.id.spinner);
-      ArrayAdapter<CharSequence> nAdapter = ArrayAdapter.createFromResource(
+      final ArrayAdapter<CharSequence> nAdapter = ArrayAdapter.createFromResource(
               this, R.array.notify_array, android.R.layout.simple_spinner_item);
       nAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
       notify.setAdapter(nAdapter);
+      notify.setOnItemSelectedListener(
+              new AdapterView.OnItemSelectedListener() {
+                 @Override
+                 public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                    Toast.makeText(MainActivity.this, nAdapter.getItem(position).toString(), Toast.LENGTH_LONG).show();
+                 }
+
+                 @Override
+                 public void onNothingSelected(AdapterView<?> adapterView) {
+
+                 }
+              }
+      );
 
       //使用ListView
       ListView list = findViewById(R.id.list);
