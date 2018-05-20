@@ -23,7 +23,8 @@ public class AddActivity extends AppCompatActivity {
 
       findViews();
 
-      helper = new MyDBHelper(this, "expense.db", null, 1);
+      //helper = new MyDBHelper(this, "expense.db", null, 1);
+      helper = MyDBHelper.getInstance(this);
    }
 
    public void add(View view) {

@@ -20,7 +20,10 @@ public class FinanceActivity extends AppCompatActivity {
       setContentView(R.layout.activity_finance);
 
       ListView list = findViewById(R.id.list);
-      MyDBHelper helper = new MyDBHelper(this, "expense.db", null, 1);
+
+      //MyDBHelper helper = new MyDBHelper(this, "expense.db", null, 1);
+      MyDBHelper helper = MyDBHelper.getInstance(this);
+
       Cursor c = helper.getReadableDatabase().query(
               "exp", null, null, null, null, null, null);
       SimpleCursorAdapter adapter = new SimpleCursorAdapter(
