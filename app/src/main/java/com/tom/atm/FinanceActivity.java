@@ -25,7 +25,7 @@ public class FinanceActivity extends AppCompatActivity {
       MyDBHelper helper = MyDBHelper.getInstance(this);
 
       Cursor c = helper.getReadableDatabase().query(
-              "exp", null, null, null, null, null, null);
+              "exp", null, null, null, null, null, "cdate ASC");
       SimpleCursorAdapter adapter = new SimpleCursorAdapter(
               this,
               R.layout.finance_row,

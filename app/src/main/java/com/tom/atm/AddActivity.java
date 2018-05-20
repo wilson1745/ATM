@@ -37,7 +37,8 @@ public class AddActivity extends AppCompatActivity {
       values.put("info", info);
       values.put("amount", amount);
       long id = helper.getWritableDatabase().insert("exp", null, values);
-      Log.d("ADD", id+"");
+      Log.d("ADD", id + "");
+      startActivity(new Intent(this, FinanceActivity.class));
    }
 
    private void findViews() {
