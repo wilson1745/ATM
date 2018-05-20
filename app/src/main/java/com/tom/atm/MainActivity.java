@@ -35,6 +35,20 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
       super.onCreate(savedInstanceState);
       setContentView(R.layout.activity_main);
 
+      //使用GridView
+      GridView grid = findViewById(R.id.grid);
+      final IconAdapter gAdapter = new IconAdapter();
+      /*ArrayAdapter gAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, func);*/
+      grid.setAdapter(gAdapter);
+      /*grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+         @Override
+         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            Toast.makeText(MainActivity.this,
+                    gAdapter.getItem(i).toString(), Toast.LENGTH_LONG).show();
+         }
+      });*/
+      grid.setOnItemClickListener(this);
+
       //使用Spinner
       Spinner notify = findViewById(R.id.spinner);
       final ArrayAdapter nAdapter = ArrayAdapter.createFromResource(
@@ -54,14 +68,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
          }
       });
-
-      //使用GridView
-      GridView grid = findViewById(R.id.grid);
-      IconAdapter gAdapter = new IconAdapter();
-      /*ArrayAdapter gAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, func);*/
-      grid.setAdapter(gAdapter);
-      grid.setOnItemClickListener(this);
-
 
       //使用ListView
       ListView list = findViewById(R.id.list);
@@ -142,6 +148,20 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
    @Override
    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+      /*switch (position) {
+         case 0:
+            break;
+         case 1:
+            break;
+         case 2:
+            break;
+         case 3:
+            break;
+         case 4:
+            finish();
+            break;
+      }*/
+
       switch ((int)id) {
          case R.drawable.func_balance:
             break;
@@ -150,11 +170,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
          case R.drawable.func_news:
             break;
          case R.drawable.func_finance:
+            startActivity(new Intent(this, FinanceActivity.class));
             break;
          case R.drawable.func_exit: //結束
             finish();
             break;
       }
-
    }
 }
