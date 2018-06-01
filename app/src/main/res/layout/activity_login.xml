@@ -48,24 +48,23 @@
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/btnlog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:onClick="login"
         android:text="登入"
         app:layout_constraintStart_toStartOf="@+id/ed_passwd"
         app:layout_constraintTop_toBottomOf="@+id/ed_passwd" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/btncancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:onClick="cancel"
         android:text="取消"
-        app:layout_constraintStart_toEndOf="@+id/button"
+        app:layout_constraintStart_toEndOf="@+id/btnlog"
         app:layout_constraintTop_toBottomOf="@+id/ed_passwd" />
 </android.support.constraint.ConstraintLayout>
