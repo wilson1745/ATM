@@ -8,6 +8,7 @@ import android.util.Log;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Array;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -21,6 +22,9 @@ import okhttp3.Response;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 public class TransActivity extends AppCompatActivity {
 
@@ -49,9 +53,22 @@ public class TransActivity extends AppCompatActivity {
 
             Log.d("OKHTTP", json);
             //解析JSON
-            parseJSON(json);
+            //parseJSON(json);
+            parseGson(json);
          }
       });
+   }
+
+   private void parseGson(String json) {
+      Gson gson = new Gson();
+      ArrayList<Transaction> list = gson.fromJson(json, new TypeToken<ArrayList<Transaction>>(){}.getType());
+      for(int i=0; i<list.size(); i++) {
+         Log.d("GSON: ", list.size() + " / " +
+                 list.get(i).getAccount() + " / " +
+                 list.get(i).getDate() + " / " +
+                 list.get(i).getAmount() + " / " +
+                 list.get(i).getType());
+      }
    }
 
    private void parseJSON(String json) {
