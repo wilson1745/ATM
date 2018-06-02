@@ -3,6 +3,8 @@ package com.tom.atm;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -58,19 +60,31 @@ public class TransActivity extends AppCompatActivity {
             Log.d("OKHTTP", json);
             //解析JSON
             //parseJSON(json);
-            //parseGson(json);
-            parseJackson(json);
+            parseGson(json);
+            //parseJackson(json);
          }
       });
+   }
+
+   private void setupRecycleView(List<Transaction> list) {
+      RecyclerView recyclerView = findViewById(R.id.recycler);
+      TransactionAdapter adapter = new TransactionAdapter(list);
+      recyclerView.setAdapter(adapter);
+      recyclerView.setLayoutManager(new LinearLayoutManager(this));
    }
 
    private void parseJackson(String s){
       ObjectMapper objectMapper = new ObjectMapper();
       try {
-         ArrayList<Transaction> list =
-                 objectMapper.readValue(s,
-                         new TypeReference<List<Transaction>>(){});
+         final ArrayList<Transaction> list = objectMapper.readValue(s, new TypeReference<List<Transaction>>(){});
          Log.d("JACKSON",list.size()+"/"+list.get(0).getAmount());
+
+         runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+               setupRecycleView(list);
+            }
+         });
       } catch (IOException e) {
          e.printStackTrace();
       }
@@ -78,14 +92,28 @@ public class TransActivity extends AppCompatActivity {
 
    private void parseGson(String json) {
       Gson gson = new Gson();
-      ArrayList<Transaction> list = gson.fromJson(json, new TypeToken<ArrayList<Transaction>>(){}.getType());
-      for(int i=0; i<list.size(); i++) {
+      //ArrayList<Transaction> list = gson.fromJson(json, new TypeToken<ArrayList<Transaction>>(){}.getType());
+
+      try {
+         final ArrayList<Transaction> list = gson.fromJson(json, new TypeReference<List<Transaction>>(){}.getType());
+         Log.d("GSON",list.size()+"/"+list.get(0).getAmount());
+         runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+               setupRecycleView(list);
+            }
+         });
+      } catch (Exception e) {
+         e.printStackTrace();
+      }
+
+      /*for(int i=0; i<list.size(); i++) {
          Log.d("GSON: ", list.size() + " / " +
                  list.get(i).getAccount() + " / " +
                  list.get(i).getDate() + " / " +
                  list.get(i).getAmount() + " / " +
                  list.get(i).getType());
-      }
+      }*/
    }
 
    private void parseJSON(String json) {
