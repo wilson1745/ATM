@@ -10,12 +10,17 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class TransActivity extends AppCompatActivity {
 
@@ -50,6 +55,23 @@ public class TransActivity extends AppCompatActivity {
    }
 
    private void parseJSON(String json) {
+      ArrayList<Transaction> trans = new ArrayList<Transaction>();
+
+      try {
+         JSONArray array = new JSONArray(json);
+         for(int i=0; i<array.length(); i++) {
+            JSONObject obj = array.getJSONObject(i);
+            String account = obj.getString("account");
+            String date = obj.getString("date");
+            int amount = obj.getInt("amount");
+            int type = obj.getInt("type");
+            Log.d("JSON: ", account + " / " + date + " / " + amount + " / " + type);
+            Transaction t = new Transaction(account, date, amount, type);
+            trans.add(t);
+         }
+      } catch(JSONException e) {
+         e.printStackTrace();
+      }
    }
 
    class TransTask extends AsyncTask<String, Void, String> {
