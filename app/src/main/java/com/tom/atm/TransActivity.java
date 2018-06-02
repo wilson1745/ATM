@@ -12,6 +12,7 @@ import java.lang.reflect.Array;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -25,6 +26,9 @@ import org.json.JSONObject;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class TransActivity extends AppCompatActivity {
 
@@ -54,9 +58,22 @@ public class TransActivity extends AppCompatActivity {
             Log.d("OKHTTP", json);
             //解析JSON
             //parseJSON(json);
-            parseGson(json);
+            //parseGson(json);
+            parseJackson(json);
          }
       });
+   }
+
+   private void parseJackson(String s){
+      ObjectMapper objectMapper = new ObjectMapper();
+      try {
+         ArrayList<Transaction> list =
+                 objectMapper.readValue(s,
+                         new TypeReference<List<Transaction>>(){});
+         Log.d("JACKSON",list.size()+"/"+list.get(0).getAmount());
+      } catch (IOException e) {
+         e.printStackTrace();
+      }
    }
 
    private void parseGson(String json) {
