@@ -42,10 +42,8 @@ public class TransActivity extends AppCompatActivity {
       setContentView(R.layout.activity_trans);
 
       //new TransTask().execute("http://atm201605.appspot.com/h");
+      Request request = new Request.Builder().url("http://atm201605.appspot.com/h").build();
 
-      Request request = new Request.Builder()
-              .url("http://atm201605.appspot.com/h")
-              .build();
       Call call = client.newCall(request);
       call.enqueue(new Callback() {
          @Override
@@ -59,9 +57,9 @@ public class TransActivity extends AppCompatActivity {
 
             Log.d("OKHTTP", json);
             //解析JSON
-            //parseJSON(json);
-            parseGson(json);
-            //parseJackson(json);
+            parseJSON(json);
+            //parseGson(json);
+            //parseJackson(json); 有問題!!!!!
          }
       });
    }
@@ -71,23 +69,6 @@ public class TransActivity extends AppCompatActivity {
       TransactionAdapter adapter = new TransactionAdapter(list);
       recyclerView.setAdapter(adapter);
       recyclerView.setLayoutManager(new LinearLayoutManager(this));
-   }
-
-   private void parseJackson(String s){
-      ObjectMapper objectMapper = new ObjectMapper();
-      try {
-         final ArrayList<Transaction> list = objectMapper.readValue(s, new TypeReference<List<Transaction>>(){});
-         Log.d("JACKSON",list.size()+"/"+list.get(0).getAmount());
-
-         runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-               setupRecycleView(list);
-            }
-         });
-      } catch (IOException e) {
-         e.printStackTrace();
-      }
    }
 
    private void parseGson(String json) {
@@ -106,18 +87,13 @@ public class TransActivity extends AppCompatActivity {
       } catch (Exception e) {
          e.printStackTrace();
       }
-
       /*for(int i=0; i<list.size(); i++) {
-         Log.d("GSON: ", list.size() + " / " +
-                 list.get(i).getAccount() + " / " +
-                 list.get(i).getDate() + " / " +
-                 list.get(i).getAmount() + " / " +
-                 list.get(i).getType());
+         Log.d("GSON: ", list.size() + " / " + list.get(i).getAccount() + " / " + list.get(i).getDate() + " / " + list.get(i).getAmount() + " / " + list.get(i).getType());
       }*/
    }
 
    private void parseJSON(String json) {
-      ArrayList<Transaction> trans = new ArrayList<Transaction>();
+      final ArrayList<Transaction> trans = new ArrayList<Transaction>();
 
       try {
          JSONArray array = new JSONArray(json);
@@ -131,7 +107,32 @@ public class TransActivity extends AppCompatActivity {
             Transaction t = new Transaction(account, date, amount, type);
             trans.add(t);
          }
+
+         runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+               setupRecycleView(trans);
+            }
+         });
+
       } catch(JSONException e) {
+         e.printStackTrace();
+      }
+   }
+
+   private void parseJackson(String s){
+      ObjectMapper objectMapper = new ObjectMapper();
+      try {
+         final ArrayList<Transaction> list = objectMapper.readValue(s, new TypeReference<List<Transaction>>(){});
+         Log.d("JACKSON",list.size()+"/"+list.get(0).getAmount());
+
+         runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+               setupRecycleView(list);
+            }
+         });
+      } catch (IOException e) {
          e.printStackTrace();
       }
    }
